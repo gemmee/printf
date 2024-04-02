@@ -12,6 +12,11 @@ int _printf(const char *format, ...)
 	va_list ap;
 	int char_num = 0; /*Stores total characters written*/
 
+	if (format == NULL)
+		return (-1);
+	if (*format == '%' && *(format + 1) == '\0')
+		return (-1);
+
 	va_start(ap, format);
 	while (*format != '\0')
 	{
@@ -22,7 +27,7 @@ int _printf(const char *format, ...)
 		else
 		{
 			char_num += parse_format(format, ap);
-			format++;
+			format++; /*jumps over '%'*/
 		}
 		format++;
 	}
@@ -55,6 +60,7 @@ int parse_format(const char *fm, va_list ap)
 		count += _putchar('%');
 		break;
 	default:
+		count += _putchar('%');
 		count += _putchar(*fm);
 	}
 	return (count);
@@ -81,7 +87,9 @@ int print_string(char *str)
 {
 	int count = 0;
 
-	while (*str)
+	if (!str)
+		str = "(null)";
+	while (*str != '\0')
 	{
 		count += _putchar(*str);
 		str++;
