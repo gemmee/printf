@@ -59,6 +59,10 @@ int parse_format(const char *fm, va_list ap)
 	case '%':
 		count += _putchar('%');
 		break;
+	case 'd':
+	case 'i':
+		count += print_integer(va_arg(ap, int));
+		break;
 	default:
 		count += _putchar('%');
 		count += _putchar(*fm);
