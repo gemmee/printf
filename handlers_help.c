@@ -20,3 +20,21 @@ int print_number(unsigned int n)
 	count += ret;
 	return (count);
 }
+
+/**
+ * count_digits - counts how digits are in the number
+ * @n: the number
+ *
+ * Return: the count
+ */
+int count_digits(unsigned int n)
+{
+	int count = 0;
+
+	while (n > 0)
+	{
+		count++;
+		n /= 10;
+	}
+	return (count);
+}

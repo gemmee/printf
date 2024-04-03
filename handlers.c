@@ -71,11 +71,8 @@ int decimal_handler(va_list ap)
 	{
 		nu = n;
 	}
-	ret = print_number(nu);
-
-	if (ret == -1)
-		return (-1);
-	count += ret;
+	count += count_digits(nu);
+	print_number(nu);
 
 	return (count);
 }
@@ -102,7 +99,7 @@ int integer_handler(va_list ap)
 		if (ret == -1)
 			return (-1);
 		num = -n;
-		count++;
+		count += ret;
 	}
 	else
 	{

@@ -17,6 +17,7 @@ int main(void)
 	fflush(stdout);
 	if (len != len2)
 	{
+		printf("len =%d and len2 =%d\n", len, len2);
 		printf("Lengths differ.\n");
 		fflush(stdout);
 		return (1);

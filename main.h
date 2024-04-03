@@ -27,6 +27,6 @@ int (*get_specifier(const char *spec))(va_list);
 int decimal_handler(va_list ap);
 int integer_handler(va_list ap);
 int print_number(unsigned int n);
-int _strlen(char *str);
+int count_digits(unsigned int n);
 
 #endif /*MAIN_H*/
