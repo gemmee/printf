@@ -18,6 +18,7 @@ int (*get_specifier(const char *spec))(va_list)
 		{"%", percent_handler},
 		{"d", decimal_handler},
 		{"i", integer_handler},
+		{"b", binary_handler},
 		{NULL, NULL}
 	};
 

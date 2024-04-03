@@ -29,4 +29,8 @@ int integer_handler(va_list ap);
 int print_number(unsigned int n);
 int count_digits(unsigned int n);
 
+/* handlers_custom.c */
+int binary_handler(va_list ap);
+int print_binary(unsigned int n);
+
 #endif /*MAIN_H*/
