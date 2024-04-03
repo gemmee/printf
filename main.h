@@ -4,11 +4,29 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-int _printf(const char *format, ...);
-int parse_format(const char *fm, va_list ap);
-int _putchar(char ch);
-int print_string(char *str);
-int print_integer(int n);
+/**
+ * struct specifiers - structure to find the correct function and specifiers
+ * @letter: specifier conversion
+ * @handle: function
+ *
+ */
+typedef struct specifiers
+{
+	char *letter;
+	int (*handle)(va_list);
+} specifier_t;
 
+int _printf(const char *format, ...);
+int _putchar(char ch);
+int process_format(const char *frmt, va_list ap);
+
+int character_handler(va_list ap);
+int string_handler(va_list ap);
+int percent_handler(va_list ap);
+int (*get_specifier(const char *spec))(va_list);
+int decimal_handler(va_list ap);
+int integer_handler(va_list ap);
+int print_number(unsigned int n);
+int _strlen(char *str);
 
 #endif /*MAIN_H*/

@@ -10,93 +10,70 @@
 int _printf(const char *format, ...)
 {
 	va_list ap;
-	int char_num = 0; /*Stores total characters written*/
+	int ret, count = 0;
 
-	if (format == NULL)
-		return (-1);
-	if (*format == '%' && *(format + 1) == '\0')
+	if (!format || (*format == '%' && *(format + 1) == '\0'))
 		return (-1);
 
 	va_start(ap, format);
-	while (*format != '\0')
+
+	ret = process_format(format, ap);
+	if (ret == -1)
+		return (-1);
+	count += ret;
+
+	va_end(ap);
+	return (count);
+}
+
+/**
+ * process_format - processes the format string
+ * @format: the format string
+ * @ap: the argument list
+ *
+ * Return: the count of letters written on success
+ *         -1 on failure
+ */
+int process_format(const char *format, va_list ap)
+{
+	int ret, count = 0;
+	int (*f)(va_list) = NULL;
+
+	while (*format)
 	{
 		if (*format != '%')
 		{
-			char_num += write(STDOUT_FILENO, format, 1);
+			ret = _putchar(*format);
+		}
+		else if (*format == '%' && *(format + 1) == '%')
+		{
+			format++;
+			ret = _putchar('%');
 		}
 		else
 		{
-			char_num += parse_format(format, ap);
-			format++; /*jumps over '%'*/
+			format++;
+			if (*(format) == '\0')
+				return (-1);
+			f = get_specifier(format);
+			if (!f)
+			{
+				ret = _putchar(*(format - 1));
+				if (ret == -1)
+					return (-1);
+				count += ret;
+				ret = _putchar(*format);
+			}
+			else
+			{
+				ret = f(ap);
+			}
 		}
+		if (ret == -1)
+			return (-1);
+		count += ret;
 		format++;
 	}
-	va_end(ap);
-	return (char_num);
-}
-
-/**
- * parse_format - parses the format string for format specifiers
- * @fm: pointer to format string
- * @ap: variable argument list
- *
- * Return: the number of chars written
- */
-int parse_format(const char *fm, va_list ap)
-{
-	int count = 0;
-
-	/*check if the next char is a valid format specifier*/
-	fm++;
-	switch (*fm)
-	{
-	case 'c':
-		count += _putchar(va_arg(ap, int));
-		break;
-	case 's':
-		count += print_string(va_arg(ap, char *));
-		break;
-	case '%':
-		count += _putchar('%');
-		break;
-	case 'd':
-	case 'i':
-		count += print_integer(va_arg(ap, int));
-		break;
-	default:
-		count += _putchar('%');
-		count += _putchar(*fm);
-	}
 	return (count);
 }
 
-/**
- * _putchar - prints a character
- * @ch: character to be printed
- *
- * Return: 1 on success
- */
-int _putchar(char ch)
-{
-	return (write(1, &ch, 1));
-}
-
-/**
- * print_string - prints a string
- * @str: pointer to the string
- *
- * Return: the length of the string
- */
-int print_string(char *str)
-{
-	int count = 0;
-
-	if (!str)
-		str = "(null)";
-	while (*str != '\0')
-	{
-		count += _putchar(*str);
-		str++;
-	}
-	return (count);
-}
