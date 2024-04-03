@@ -13,7 +13,6 @@ int character_handler(va_list ap)
 	return (_putchar(c));
 }
 
-
 /**
  * string_handler - handles string specifier
  * @ap: argument list containing the string to print
@@ -91,40 +90,44 @@ int decimal_handler(va_list ap)
 int integer_handler(va_list ap)
 {
 	int n = va_arg(ap, int);
-	int count = 1;
-	int num, digit, arg, ret, exp = 1;
+	int count = 0;
+	int digit, ret, exp = 1;
+	unsigned int num, m;
 
+	if (n == 0)
+		return (_putchar('0'));
 	if (n < 0)
 	{
 		ret = _putchar('-');
 		if (ret == -1)
 			return (-1);
-		n = -n;
+		num = -n;
 		count++;
 	}
-	num = n;
-	arg = n % 10;
-	n /= 10;
+	else
+	{
+		num = n;
+	}
+	m = num;
 	if (num > 0)
 	{
-		while (num / 10)
+		while (num / 10 != 0)
 		{
 			exp = exp * 10;
 			num = num / 10;
 		}
-		num = n;
 		while (exp)
 		{
-			digit = num / exp;
+			digit = m / exp;
 			ret = _putchar(digit + '0');
 			if (ret == -1)
 				return (-1);
-			num = num % exp;
-			exp = exp / 10;
 			count += ret;
+			m = m - (digit * exp);
+			exp = exp / 10;
 		}
 	}
-	_putchar(arg + '0');
+
 	return (count);
 }
 
